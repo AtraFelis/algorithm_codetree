@@ -15,6 +15,9 @@ public class Main {
         ans = 0;
         checkRow(grid, m);
         checkCol(grid, m);
+
+        
+        if(n==1) ans = 2;
         System.out.println(ans);
     }
 
