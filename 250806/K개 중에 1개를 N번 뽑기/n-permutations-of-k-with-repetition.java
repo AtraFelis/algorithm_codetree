@@ -15,7 +15,10 @@ public class Main {
         backtracking(k, n, 0);
         StringBuilder sb = new StringBuilder();
         for(Integer[] pair : pairs) {
-            sb.append(pair[0]).append(" ").append(pair[1]).append('\n');
+            for(int num : pair) {
+                sb.append(num).append(" ");
+            }
+            sb.append('\n');
         }
 
         System.out.println(sb);
