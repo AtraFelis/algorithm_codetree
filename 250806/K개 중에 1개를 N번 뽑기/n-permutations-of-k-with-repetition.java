@@ -25,7 +25,8 @@ public class Main {
     }
     public static void backtracking(int k, int n, int depth) {
         if(depth == n) {
-            pairs.add(new Integer[]{pair[0], pair[1]});
+            Integer[] tmp = Arrays.stream(pair).boxed().toArray(Integer[]::new);
+            pairs.add(tmp);
             return;
         }
 
