@@ -9,23 +9,27 @@ public class Main {
         n = sc.nextInt();
 
         nums = new int[n];
-                
-        backtracking(0, 0);
+
+        backtracking(0);
         System.out.println(answer);
     }
 
-    private static void backtracking(int prevNum, int depth) {
+    private static void backtracking(int depth) {
         if(n == depth) {
+            // for(int num : nums) {
+            //     System.out.print(num);
+            // }
+            // System.out.println();
             answer++;
             return;
         }
 
-        for(int i = 1; i <= n; i++) {
+        for(int i = 1; i <= 4; i++) {
             if(depth + i <= n) {
                 for(int k = 0; k < i; k++) {
                     nums[depth + k] = i;
                 }
-                backtracking(i, depth + i);
+                backtracking(depth + i);
             }
         }
     }
