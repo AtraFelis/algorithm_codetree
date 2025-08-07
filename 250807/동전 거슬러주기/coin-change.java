@@ -11,12 +11,12 @@ public class Main {
         int m = Integer.parseInt(stk.nextToken());
 
         int[] coin = new int[n];
-        Arrays.sort(coin);
-
         stk = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++)
             coin[i] = Integer.parseInt(stk.nextToken());
         
+        Arrays.sort(coin);
+
         int[] dp = new int[m + 1];
         Arrays.fill(dp, 10001);
         for (int i = 0; i < n; i++)
