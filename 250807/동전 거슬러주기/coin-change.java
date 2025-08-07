@@ -18,7 +18,7 @@ public class Main {
             coin[i] = Integer.parseInt(stk.nextToken());
         
         int[] dp = new int[m + 1];
-        Arrays.fill(dp, Integer.MAX_VALUE);
+        Arrays.fill(dp, 10001);
         for (int i = 0; i < n; i++)
             if(coin[i] <= m)
                 dp[coin[i]] = 1;
@@ -30,7 +30,7 @@ public class Main {
             }
         }
 
-        int answer = dp[m] != Integer.MAX_VALUE ? dp[m] : -1;
+        int answer = dp[m] != 10001 ? dp[m] : -1;
         System.out.println(answer);
     }
 }
