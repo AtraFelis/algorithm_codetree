@@ -22,8 +22,6 @@ public class Main {
         int[] dx = {-1, 0, 1, 0};
         int[] dy = {0, 1, 0, -1};
 
-        int answer = 0;
-
         for(int i = 0; i < n; i++) {
             for(int j = 0; j < n; j++) {
                 
@@ -34,11 +32,17 @@ public class Main {
                     if(x < 0 || y < 0 || x >= n || y >= n)
                         continue;
 
-                    if(grid[i][j] > grid[x][y]) {
-                        dp[i][j] = Math.max(dp[i][j], dp[x][y] + 1);
-                        answer = Math.max(answer, dp[i][j]);
+                    if(grid[i][j] < grid[x][y]) {
+                        dp[x][y] = Math.max(dp[i][j] + 1, dp[x][y]);
                     }
                 }
+            }
+        }
+
+        int answer = 0;
+        for(int i = 0; i < n; i++) {
+            for(int j = 0; j < n; j++) {
+                answer = Math.max(answer, dp[i][j]);
             }
         }
 
