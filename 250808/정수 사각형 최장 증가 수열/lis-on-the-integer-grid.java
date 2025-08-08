@@ -8,12 +8,20 @@ public class Main {
 
         int n = Integer.parseInt(br.readLine());
         int[][] grid = new int[n][n];
+        
+        List<int[]> pos = new ArrayList<>();
+
         for (int i = 0; i < n; i++) {
             stk = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
                 grid[i][j] = Integer.parseInt(stk.nextToken());
+                pos.add(new int[]{grid[i][j], i, j});
             }
         }
+
+        Collections.sort(pos, (p1, p2) -> {
+            return p1[0] - p2[0];
+        });
         
         int[][] dp = new int[n][n];
         for(int i = 0; i < n; i++)
@@ -22,19 +30,18 @@ public class Main {
         int[] dx = {-1, 0, 1, 0};
         int[] dy = {0, 1, 0, -1};
 
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                
-                for(int k = 0; k < 4; k++) {
-                    int x = i + dx[k];
-                    int y = j + dy[k];
+        for(int i = 0; i < pos.size(); i++) {
+            int[] p = pos.get(i);
+            int x = p[1], y = p[2];
+            for(int k = 0; k < 4; k++) {
+                int nx = x + dx[k];
+                int ny = y + dy[k];
 
-                    if(x < 0 || y < 0 || x >= n || y >= n)
-                        continue;
+                if(nx < 0 || ny < 0 || nx >= n || ny >= n)
+                    continue;
 
-                    if(grid[i][j] < grid[x][y]) {
-                        dp[x][y] = Math.max(dp[i][j] + 1, dp[x][y]);
-                    }
+                if(grid[x][y] < grid[nx][ny]) {
+                    dp[nx][ny] = Math.max(dp[x][y] + 1, dp[nx][ny]);
                 }
             }
         }
