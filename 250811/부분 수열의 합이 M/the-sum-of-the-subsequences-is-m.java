@@ -2,10 +2,6 @@ import java.util.*;
 import java.io.*;
 
 public class Main {
-
-    private static int answer = 10001;
-    private static boolean[] visited;
-
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -19,31 +15,21 @@ public class Main {
             arr[i] = Integer.parseInt(stk.nextToken());
         }
 
-        visited = new boolean[n];
-        
-        backtracking(arr, m, 0);
-        System.out.println(answer == 10001 ? - 1 : answer);
-    }
+        int[] dp = new int[m+1];
+        for(int i = 0; i <= m; i++) {
+            dp[i] = n+1;
+        }
+        dp[0] = 0;
 
-    private static int sum = 0, len = 0;
-    private static void backtracking(int[] arr, int m, int depth) {
-        if(sum == m) {
-            answer = Math.min(answer, depth);
-            return;
-        } else if (sum > m || len >= answer) {
-            return;
+        for(int i = 0; i < n; i++) {
+            for(int j = m; j >= 0; j--) {
+                if(j >= arr[i]) {
+                    if(dp[j - arr[i]] == 10001) continue;
+                    dp[j] = Math.min(dp[j], dp[j - arr[i]] + 1);
+                }
+            }
         }
 
-        for(int i = depth; i < arr.length; i++) {
-            if(visited[i]) continue;
-
-            sum += arr[i];
-            len++;
-            visited[i] = true;
-            backtracking(arr, m, depth + 1);
-            visited[i] = false;
-            len--;
-            sum -= arr[i];
-        }
+        System.out.println(dp[m] != n + 1 ? dp[m] : -1);
     }
 }
