@@ -25,13 +25,12 @@ public class Main {
         System.out.println(answer == 10001 ? - 1 : answer);
     }
 
-    private static int sum = 0;
+    private static int sum = 0, len = 0;
     private static void backtracking(int[] arr, int m, int depth) {
         if(sum == m) {
             answer = Math.min(answer, depth);
-
             return;
-        } else if (sum > m) {
+        } else if (sum > m || len >= answer) {
             return;
         }
 
@@ -39,9 +38,11 @@ public class Main {
             if(visited[i]) continue;
 
             sum += arr[i];
+            len++;
             visited[i] = true;
             backtracking(arr, m, depth + 1);
             visited[i] = false;
+            len--;
             sum -= arr[i];
         }
     }
