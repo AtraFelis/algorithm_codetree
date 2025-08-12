@@ -12,7 +12,7 @@ public class Main {
         for(int i = 0; i < n; i++) {
             if(arr[i] == 1) {
                 answer++;
-                i += m*2 + 1;
+                i += m*2;
             }
         }
 
