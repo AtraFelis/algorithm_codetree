@@ -7,23 +7,23 @@ public class Main {
         int n = Integer.parseInt(br.readLine());
         
         StringBuilder sb = new StringBuilder();
-        Map<Integer, Integer> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         for(int i = 0; i < n; i++) {
             StringTokenizer stk = new StringTokenizer(br.readLine());
             String command = stk.nextToken();
 
             if(command.equals("add")){
-                int key = Integer.parseInt(stk.nextToken());
-                int value = Integer.parseInt(stk.nextToken());
+                String key = stk.nextToken();
+                String value = stk.nextToken();
                 map.put(key, value);
             }
             else if(command.equals("remove")){
-                int key = Integer.parseInt(stk.nextToken());
+                String key = stk.nextToken();
                 map.remove(key);
             }
             else {
-                int key = Integer.parseInt(stk.nextToken());
-                sb.append(map.containsKey(key) ? map.get(key) : "None").append('\n');
+                String key = stk.nextToken();
+                sb.append(map.getOrDefault(key, "None")).append('\n');
             }
         }
 
