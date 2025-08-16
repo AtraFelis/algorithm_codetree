@@ -19,6 +19,8 @@ public class Main {
                 
                 if(j == 0)
                     dp[i][j] = dp[i-1][j] + blue;
+                else if(dp[i-1][j] == 0)
+                    dp[i][j] = dp[i-1][j-1] + red;
                 else
                     dp[i][j] = Math.max(dp[i-1][j] + blue, dp[i-1][j-1] + red);
             }
