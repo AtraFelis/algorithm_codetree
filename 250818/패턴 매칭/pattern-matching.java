@@ -17,9 +17,12 @@ public class Main {
                         dp[i][j] = 1;
                     else
                         dp[i][j] = dp[i][j-1] + 1;
-                }
-                else if(p.charAt(i + j) == '*') {
+                } else if(p.charAt(i + j) == '*') {
                     char c = p.charAt(i + j - 1);
+                    if(c != s.charAt(j) && c != '.'){
+                        dp[i][j] = 0;
+                        continue;
+                    }
                     while(j < s.length() && (c == s.charAt(j) || c == '.')) {
                         if(j == 0)
                             dp[i][j] = 1;
@@ -28,13 +31,13 @@ public class Main {
                         j++;
                     }
                     j--;
-
                 } else { // 패턴과 일치하지 않을 경우
                     dp[i][j] = 0;
                     break;
                 }
 
-                if(dp[i][j] == s.length()) flag = true;
+                if(dp[i][j] == s.length())
+                    flag = true;
             }
             if(flag) break;
         }
