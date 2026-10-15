@@ -14,7 +14,7 @@ public class Main {
                 if(dir == 'R') {
                     lines[pos++] += 1;
                 } else {
-                    lines[pos--] += 1;
+                    lines[--pos] += 1;
                 }
             }
         }
