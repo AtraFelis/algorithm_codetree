@@ -18,7 +18,7 @@ public class Main {
 
         int[][] tiles = new int[min + max + 1][3];
 
-        int pos = min-1;
+        int pos = min;
 
         // 현재색 [][0] 흰색을 칠한 횟수 [][1] 검정색을 칠한 횟수 [][2]
         // 흰색 1, 검정색 2 회색 3
