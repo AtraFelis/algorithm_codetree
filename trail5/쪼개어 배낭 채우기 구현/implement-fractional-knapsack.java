@@ -23,6 +23,7 @@ public class Main {
         do {
             ans += jewel[idx][1];
             idx++;
+            if(idx >= n) break;
             curW += jewel[idx][0];
         } while(curW < m);
         
