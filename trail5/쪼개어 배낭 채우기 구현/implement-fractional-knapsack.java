@@ -19,17 +19,18 @@ public class Main {
         //     System.out.println(jewel[i][0] + " " + jewel[i][1] + " " + ((float)jewel[i][1]/jewel[i][0]));
 
         double ans = 0;
-        int idx= 0, curW = jewel[idx][0];
-        do {
-            ans += jewel[idx][1];
-            idx++;
-            if(idx >= n) break;
-            curW += jewel[idx][0];
-        } while(curW <= m);
-        
-        // System.out.println(m - (curW - jewel[idx][0]));
-        if(idx < n)
-            ans += (double)jewel[idx][1]/jewel[idx][0] * (m - (curW - jewel[idx][0]));
+        for(int i = 0; i < n; i++) {
+            int w = jewel[i][0];
+            int v = jewel[i][1];
+
+            if(m >= w) {
+                m -= w;
+                ans += v;
+            } else {
+                ans += (double)v / w * m;
+                break;
+            }
+        }
 
         System.out.printf("%.3f", ans);
     }
