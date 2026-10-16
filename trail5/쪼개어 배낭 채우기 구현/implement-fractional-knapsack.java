@@ -25,10 +25,11 @@ public class Main {
             idx++;
             if(idx >= n) break;
             curW += jewel[idx][0];
-        } while(curW < m);
+        } while(curW <= m);
         
         // System.out.println(m - (curW - jewel[idx][0]));
-        ans += (double)jewel[idx][1]/jewel[idx][0] * (m - (curW - jewel[idx][0]));
+        if(idx < n)
+            ans += (double)jewel[idx][1]/jewel[idx][0] * (m - (curW - jewel[idx][0]));
 
         System.out.printf("%.3f", ans);
     }
