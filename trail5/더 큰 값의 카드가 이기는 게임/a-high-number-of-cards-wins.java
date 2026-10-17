@@ -3,18 +3,31 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
-        
-        int[] bCards = new int[n], aCards = new int[n];
+        int[] cards = new int[n * 2 + 1];
         for (int i = 0; i < n; i++) {
-            bCards[i] = sc.nextInt();
+            cards[sc.nextInt()] = 1; // B의 카드는 1
         }
-        
-        Arrays.sort(bCards);
 
+
+        boolean[] visited = new boolean[n * 2 + 1];
+        visited[0] = true;
+        cards[0] = -1;
         int ans = 0;
-        for(int i = 1; i < n; i++) {
-            if(bCards[i - 1] - bCards[i] != 1)
-                ans++;
+
+        for (int i = 1; i < cards.length; i++) {
+            if(!visited[i] && cards[i] == 1) {
+                visited[i] = true;
+                for(int j = i+1; j < cards.length; j++) {
+                    if(j >= cards.length)
+                        j = 1;
+
+                    if(cards[j] == 0 && !visited[j]) {
+                        ans += i < j ? 1 : 0;
+                        visited[j] = true;
+                        break;
+                    }
+                }
+            }
         }
 
         System.out.println(ans);
