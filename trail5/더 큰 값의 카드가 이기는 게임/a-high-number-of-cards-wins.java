@@ -1,11 +1,14 @@
 import java.util.*;
+import java.io.*;
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        int n = Integer.parseInt(br.readLine());
         int[] cards = new int[n * 2 + 1];
         for (int i = 0; i < n; i++) {
-            cards[sc.nextInt()] = 1; // B의 카드는 1
+            cards[Integer.parseInt(br.readLine())] = 1; // B의 카드는 1
         }
 
 
