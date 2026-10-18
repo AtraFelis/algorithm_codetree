@@ -49,28 +49,46 @@ public class Main {
         Arrays.sort(parens);
         // System.out.println(Arrays.toString(parens));
 
-        String t = "";
+        List<Character> tList = new ArrayList<>();
         for(Paren p : parens) {
-            t += p.t;
+            for(char c : p.t.toCharArray()) {
+                tList.add(c);
+            }
         }
         // System.out.println(t);
 
-        int ans = 0;
-        char[] tArr = t.toCharArray();
-        for(int i = 0; i < tArr.length; i++) {
-            if(tArr[i] == ')')
-                continue;
-            for(int j = i; j < tArr.length; j++) {
-                if(tArr[j] == ')') {
-                    ans++;
-                }
+        long ans = 0;
+        // for(int i = 0; i < tList.size(); i++) {
+        //     if(tList.get(i) == ')')
+        //         continue;
+        //     for(int j = i; j < tList.size(); j++) {
+        //         if(tList.get(j) == ')') {
+        //             ans++;
+        //         }
+        //     }
+        // }
+
+        int[] scores = new int[tList.size()];
+        int score = 1;
+        for(int i = tList.size() - 1; i >= 0 ; i--) {
+            if(tList.get(i) == ')') {
+                scores[i] = score++;
             }
         }
 
-        // int[] scores = new int[n];
-        // for(int i = tArr.length - 1; i >= 0 ; i--) {
-            
-        // }
+        // System.out.println(tList);
+        // System.out.println(Arrays.toString(scores));
+
+        for(int i = 0; i < tList.size(); i++) {
+            if(tList.get(i) == '(') {
+                for(int j = i; j < tList.size(); j++) {
+                    if(scores[j] != 0) {
+                        ans += scores[j];
+                        break;
+                    }
+                }
+            }
+        }
 
         System.out.println(ans);
     }
