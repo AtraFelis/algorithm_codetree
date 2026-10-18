@@ -1,54 +1,54 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int c = sc.nextInt();
-        int n = sc.nextInt();
-        int[] redStones = new int[c];
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int c = Integer.parseInt(st.nextToken()); // 빨간 돌 개수
+        int n = Integer.parseInt(st.nextToken()); // 검정 돌 개수
+
+        // 빨간 돌의 T 값 입력 후 오름차순 정렬
+        int[] reds = new int[c];
         for (int i = 0; i < c; i++) {
-            redStones[i] = sc.nextInt();
+            reds[i] = Integer.parseInt(br.readLine().trim());
         }
-        Integer[][] blackStones = new Integer[n][2];
+        Arrays.sort(reds);
+
+        // 검정 돌의 [A, B] 구간 입력 후 A 기준 오름차순 정렬
+        int[][] blacks = new int[n][2];
         for (int i = 0; i < n; i++) {
-            blackStones[i][0] = sc.nextInt();
-            blackStones[i][1] = sc.nextInt();
+            st = new StringTokenizer(br.readLine());
+            blacks[i][0] = Integer.parseInt(st.nextToken());
+            blacks[i][1] = Integer.parseInt(st.nextToken());
         }
-        
-        Arrays.sort(redStones);
-        Arrays.sort(blackStones, (s1, s2) -> {
-            if (s1[0] == s2[0])
-                return Integer.compare(s1[1], s2[1]);
-            return Integer.compare(s1[0], s2[0]); 
-        });
+        Arrays.sort(blacks, (x, y) -> Integer.compare(x[0], y[0]));
 
-        // System.out.println(Arrays.toString(redStones));
-        // for(int i = 0; i < blackStones.length; i++) {
-        //     System.out.println(Arrays.toString(blackStones[i]));
-        // }
+        // 현재 사용 가능한 구간들의 B 값을 최소 힙으로 관리
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
 
-        int bIdx = 0;
-        int ans = 0;
-        for(int rIdx = 0; rIdx < c; rIdx++) {
+        int idx = 0;   // 검정 돌 포인터
+        int count = 0; // 매칭된 쌍의 수
 
-            int redNum = redStones[rIdx];
-            // System.out.println(redNum); 
+        for (int t : reds) {
+            // A <= T인 구간을 모두 힙에 추가 (B 값만 저장)
+            while (idx < n && blacks[idx][0] <= t) {
+                pq.offer(blacks[idx][1]);
+                idx++;
+            }
 
-            for(int i = bIdx; i < n; i++) {
-                int start = blackStones[i][0];
-                int end = blackStones[i][1];
+            // 이미 끝나버린 구간(B < T) 제거
+            while (!pq.isEmpty() && pq.peek() < t) {
+                pq.poll();
+            }
 
-                // System.out.printf("%d %d\n", start, end);
-
-                if(start <= redNum && redNum <= end) {
-                    // System.out.printf("%d : %d %d\n", redNum, start, end);
-                    ans++;
-                    bIdx = i + 1;
-                    break;
-                }
+            // 가장 빨리 끝나는 구간과 매칭
+            if (!pq.isEmpty()) {
+                pq.poll();
+                count++;
             }
         }
 
-        System.out.println(ans);
+        System.out.println(count);
     }
 }
