@@ -59,10 +59,10 @@ public class Main {
             // }
             // System.out.println(" | " + Arrays.toString(dist));
 
-            int node = pq.peek().node;
-            int weight = pq.peek().weight; 
-            pq.remove();
-
+            Edge edge = pq.remove();
+            int node = edge.node;
+            int weight = edge.weight; 
+            
             if(visited[node])
                 continue;
 
