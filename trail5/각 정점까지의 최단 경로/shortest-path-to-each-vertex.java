@@ -46,8 +46,6 @@ public class Main {
         }
         dist[k] = 0;
 
-        boolean[] visited = new boolean[n+1];
-
         PriorityQueue<Edge> pq = new PriorityQueue<>();
         pq.add(new Edge(k, 0));
 
@@ -63,20 +61,17 @@ public class Main {
             int node = edge.node;
             int weight = edge.weight; 
             
-            if(visited[node])
+            if(dist[node] < weight)
                 continue;
-
-            visited[node] = true;
 
             for(int i = 0; i < graph[node].size(); i++) {
                 int d = graph[node].get(i).node;
                 int w = graph[node].get(i).weight;
-                
-                if(visited[d])
-                    continue;
-                
-                dist[d] = Math.min(dist[d], w + dist[node]);
-                pq.add(new Edge(d, dist[d]));
+
+                if (dist[d] > dist[node] + w) {
+                    dist[d] = dist[node] + w;
+                    pq.add(new Edge(d, dist[d]));
+                }
             }
         }
 
