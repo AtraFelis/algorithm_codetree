@@ -63,6 +63,9 @@ public class Main {
             int weight = pq.peek().weight; 
             pq.remove();
 
+            if(vistied[node])
+                continue;
+
             visited[node] = true;
 
             for(int i = 0; i < graph[node].size(); i++) {
