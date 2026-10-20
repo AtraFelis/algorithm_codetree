@@ -6,13 +6,16 @@ public class Main {
         int n = sc.nextInt();
         int m = sc.nextInt();
 
-        int[][] graphR = new int[n+1][n+1]; //
+        ArrayList<int[]>[] graphR = new ArrayList[n+1];
+        for(int i = 0; i < n + 1; i++)
+            graphR[i] = new ArrayList<>();
+
         for (int i = 0; i < m; i++) {
             int a = sc.nextInt();
             int b = sc.nextInt();
             int d = sc.nextInt();
 
-            graphR[b][a] = d;
+            graphR[b].add(new int[]{a, d});
         }
         
         int[] dist = new int[n + 1];
@@ -25,12 +28,11 @@ public class Main {
         for(int i = 1; i < n + 1; i++) {
             visited[node] = true;
 
-            for(int j = 1; j < n + 1; j++) {
-                if(visited[j])
+            for(int[] next : graphR[node]) {
+                if(visited[next[0]])
                     continue;
                 
-                if(graphR[node][j] != 0)
-                    dist[j] = Math.min(dist[j], graphR[node][j] + dist[node]);
+                dist[next[0]] = Math.min(dist[next[0]],  dist[node] + next[1]);
             }
 
             int minDist = Integer.MAX_VALUE;
