@@ -68,12 +68,12 @@ public class Main {
                 int nextNode = neighbor.to;
                 long newTotalCost = p.totalCost;
 
-                if(minCost < newTotalCost)
-                    continue;
-
                 if(nextBus != p.bus) { // 버스가 다르면 환승
                     newTotalCost += costs[nextBus];
                 }
+
+                if(minCost < newTotalCost)
+                    continue;
 
                 if(nextNode == B && minCost > newTotalCost) { // 만약 다음 지점이 도착지라면
                     minCost = newTotalCost;
