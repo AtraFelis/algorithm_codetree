@@ -60,19 +60,15 @@ public class Main {
         long minCost = Long.MAX_VALUE;
         long minTime = Long.MAX_VALUE;
 
-        boolean[] visited = new boolean[1001];
-
         while(!q.isEmpty()) {
             Passenger p = q.remove();
-
-            visited[p.node] = true;
 
             for(Edge neighbor : graph.get(p.node)) {
                 int nextBus = neighbor.bus;
                 int nextNode = neighbor.to;
                 int newTotalCost = p.totalCost;
 
-                if(visited[nextNode])
+                if(minCost < newTotalCost)
                     continue;
 
                 if(nextBus != p.bus) { // 버스가 다르면 환승
