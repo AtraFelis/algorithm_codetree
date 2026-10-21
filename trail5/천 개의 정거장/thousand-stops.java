@@ -37,7 +37,7 @@ public class Main {
         int N = sc.nextInt();
 
         List<List<Edge>> graph = new ArrayList<>();
-        for(int i = 0; i < 101; i++) {
+        for(int i = 0; i < 1001; i++) {
             graph.add(new ArrayList<>());
         }
 
@@ -60,7 +60,7 @@ public class Main {
         long minCost = Long.MAX_VALUE;
         long minTime = Long.MAX_VALUE;
 
-        boolean[] visited = new boolean[101];
+        boolean[] visited = new boolean[1001];
 
         while(!q.isEmpty()) {
             Passenger p = q.remove();
