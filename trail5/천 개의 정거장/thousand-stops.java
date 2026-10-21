@@ -18,10 +18,10 @@ class Edge implements Comparable<Edge> {
 class Passenger {
     int bus;
     int node;
-    int totalCost;
-    int totalTime;
+    long totalCost;
+    long totalTime;
 
-    public Passenger(int bus, int n, int totalCost, int totalTime) {
+    public Passenger(int bus, int n, long totalCost, long totalTime) {
         this.bus = bus;
         this.node = n;
         this.totalCost = totalCost;
@@ -66,7 +66,7 @@ public class Main {
             for(Edge neighbor : graph.get(p.node)) {
                 int nextBus = neighbor.bus;
                 int nextNode = neighbor.to;
-                int newTotalCost = p.totalCost;
+                long newTotalCost = p.totalCost;
 
                 if(minCost < newTotalCost)
                     continue;
