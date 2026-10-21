@@ -39,6 +39,10 @@ public class Main {
             graph.get(y).add(new Edge(x, z));
         }
 
+        for (int i = 1; i < n + 1; i++) {
+            Collections.sort(graph.get(i), (e1, e2) -> Integer.compare(e1.to, e2.to));
+        }
+
         stk = new StringTokenizer(br.readLine());
         int a = Integer.parseInt(stk.nextToken());
         int b = Integer.parseInt(stk.nextToken());
