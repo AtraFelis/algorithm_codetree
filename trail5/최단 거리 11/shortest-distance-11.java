@@ -75,15 +75,7 @@ public class Main {
         }
 
         StringBuilder sb = new StringBuilder();
-        int ans = 0;
-        int min = Integer.MAX_VALUE;
-        for(int i = 1; i < n; i++) {
-            if(dist[i] < min) {
-                min = dist[i];
-                ans = i;
-            }
-        }
-        sb.append(ans).append('\n');
+        sb.append(dist[a]).append('\n');
 
         // System.out.println(Arrays.toString(dist));
         // System.out.println(sb);
