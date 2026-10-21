@@ -72,7 +72,7 @@ public class Main {
                     newTotalCost += costs[nextBus];
                 }
 
-                if(minCost < newTotalCost)
+                if(minCost < newTotalCost || (minCost == newTotalCost && minTime < p.totalTime + 1))
                     continue;
 
                 if(nextNode == B && minCost > newTotalCost) { // 만약 다음 지점이 도착지라면
