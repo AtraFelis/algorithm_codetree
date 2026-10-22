@@ -1,98 +1,140 @@
+
+import java.io.*;
 import java.util.*;
 
-class Edge implements Comparable<Edge> {
-    int bus;
-    int to;
-
-    public Edge(int bus, int n) {
-        this.bus = bus;
-        this.to = n;
-    }
-
-    @Override
-    public int compareTo(Edge edge) {
-        return Integer.compare(this.to, edge.to);
-    }
-}
-
-class Passenger {
-    int bus;
-    int node;
-    long totalCost;
-    long totalTime;
-
-    public Passenger(int bus, int n, long totalCost, long totalTime) {
-        this.bus = bus;
-        this.node = n;
-        this.totalCost = totalCost;
-        this.totalTime = totalTime;
-    }
-}
-
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int A = sc.nextInt();
-        int B = sc.nextInt();
-        int N = sc.nextInt();
 
-        List<List<Edge>> graph = new ArrayList<>();
-        for(int i = 0; i < 1001; i++) {
-            graph.add(new ArrayList<>());
+    static class Bus {
+        long cost;
+        int[] route;
+        
+        public Bus(long cost, int[] route) {
+            this.cost = cost;
+            this.route = route;
+        }
+    }
+
+    static class StopInfo {
+        int busId;
+        int index;
+        
+        public StopInfo(int busId, int index) {
+            this.busId = busId;
+            this.index = index;
+        }
+    }
+
+    static class State {
+        int node;
+        long cost;
+        long time;
+
+        public State(int node, long cost, long time) {
+            this.node = node;
+            this.cost = cost;
+            this.time = time;
+        }
+    }
+
+    static List<Bus> buses = new ArrayList<>();
+    static List<StopInfo>[] stops = new ArrayList[1001];
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int A = Integer.parseInt(st.nextToken());
+        int B = Integer.parseInt(st.nextToken());
+        int N = Integer.parseInt(st.nextToken());
+
+        for (int i = 0; i <= 1000; i++) {
+            stops[i] = new ArrayList<>();
         }
 
-        int[] costs =  new int[N];
-        for (int i = 0; i < N; i++) {
-            costs[i] = sc.nextInt();
-            int stopCount = sc.nextInt();
-            int prevStop = sc.nextInt();
-            for (int j = 1; j < stopCount; j++) {
-                int stop = sc.nextInt();
-                graph.get(prevStop).add(new Edge(i, stop));
-                prevStop = stop;
+        // 1. 버스 노선 입력
+        for (int busId = 0; busId < N; busId++) {
+            st = new StringTokenizer(br.readLine());
+
+            long cost = Long.parseLong(st.nextToken());
+            int count = Integer.parseInt(st.nextToken());
+
+            int[] route = new int[count];
+            st = new StringTokenizer(br.readLine());
+
+            for (int i = 0; i < count; i++) {
+                route[i] = Integer.parseInt(st.nextToken());
+                stops[route[i]].add(new StopInfo(busId, i));
+            }
+
+            buses.add(new Bus(cost, route));
+        }
+
+        // 2. 최소 비용과 시간 초기화
+        long[] minCost = new long[1001];
+        long[] minTime = new long[1001];
+
+        Arrays.fill(minCost, Long.MAX_VALUE);
+        Arrays.fill(minTime, Long.MAX_VALUE);
+
+        minCost[A] = 0;
+        minTime[A] = 0;
+
+        // 3. 우선순위 큐
+        PriorityQueue<State> pq = new PriorityQueue<>(
+                (a, b) -> {
+                    if (a.cost != b.cost) {
+                        return Long.compare(a.cost, b.cost);
+                    }
+                    return Long.compare(a.time, b.time);
+                });
+
+        pq.offer(new State(A, 0, 0));
+
+        // 4. 다익스트라 알고리즘
+        while (!pq.isEmpty()) {
+            State current = pq.poll();
+
+            int node = current.node;
+            long cost = current.cost;
+            long time = current.time;
+
+            if (cost > minCost[node] || (cost == minCost[node] && time > minTime[node])) {
+                continue;
+            }
+
+            // 현재 정류장에서 탑승할 수 있는 버스
+            for (StopInfo info : stops[node]) {
+
+                Bus bus = buses.get(info.busId);
+                int currentIndex = info.index;
+                int[] route = bus.route;
+
+                // 해당 버스에서 내릴 수 있는 정류장
+                for (int i = currentIndex + 1; i < route.length; i++) {
+
+                    int next = route[i];
+
+                    long newCost = cost + bus.cost;
+                    long newTime = time + (i - currentIndex);
+
+                    if (newCost < minCost[next] ||
+                            (newCost == minCost[next] && newTime < minTime[next])) {
+
+                        minCost[next] = newCost;
+                        minTime[next] = newTime;
+
+                        pq.offer(new State(next, newCost, newTime));
+                    }
+                }
             }
         }
-        
-        // 1. 모든 경로 찾기
-        Queue<Passenger> q = new LinkedList<>();
-        q.add(new Passenger(-1, A, 0, 0)); // 이전에 타고 있던 버스, 현재 지점 (안 타고 있었으므로 -1)
 
-        long minCost = Long.MAX_VALUE;
-        long minTime = Long.MAX_VALUE;
-
-        while(!q.isEmpty()) {
-            Passenger p = q.remove();
-
-            for(Edge neighbor : graph.get(p.node)) {
-                int nextBus = neighbor.bus;
-                int nextNode = neighbor.to;
-                long newTotalCost = p.totalCost;
-
-                if(nextBus != p.bus) { // 버스가 다르면 환승
-                    newTotalCost += costs[nextBus];
-                }
-
-                if(minCost < newTotalCost || (minCost == newTotalCost && minTime < p.totalTime + 1))
-                    continue;
-
-                if(nextNode == B && minCost > newTotalCost) { // 만약 다음 지점이 도착지라면
-                    minCost = newTotalCost;
-                    minTime = p.totalTime + 1;
-                    continue; // 도착했으므로 큐에 추가 안 하고 넘김
-                } else if(nextNode == B && minCost == newTotalCost) {
-                    minTime = Math.min(minTime, p.totalTime + 1);
-                    continue;
-                }
-
-                q.add(new Passenger(nextBus, nextNode, newTotalCost, p.totalTime + 1));
-            }
+        // 5. 결과 출력
+        if (minCost[B] == Long.MAX_VALUE) {
+            System.out.println("-1 -1");
+        } else {
+            System.out.println(minCost[B] + " " + minTime[B]);
         }
-
-        if(minCost == Long.MAX_VALUE || minTime == Long.MAX_VALUE) {
-            minCost = -1;
-            minTime = -1;
-        }
-        
-        System.out.println(minCost + " " + minTime);
     }
 }
