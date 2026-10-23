@@ -91,16 +91,19 @@ public class Main {
                 int currNode = edge.to;
                 int currWeight = edge.weight;
 
-                for(Edge neighbor : graph.get(currNode)) {
+                if (currWeight > dist[currNode]) {
+                    continue;
+                }
 
+                for(Edge neighbor : graph.get(currNode)) {
                     int nextNode = neighbor.to;
                     int newWeight = neighbor.weight + dist[currNode];
 
-                    if(dist[nextNode] < newWeight)
-                        continue;
+                    if(dist[nextNode] > newWeight){
+                        dist[nextNode] = newWeight;
+                        pq.add(new Edge(nextNode, newWeight));  
+                    }
 
-                    dist[nextNode] = newWeight;
-                    pq.add(new Edge(nextNode, newWeight));
                 }
             }
 
