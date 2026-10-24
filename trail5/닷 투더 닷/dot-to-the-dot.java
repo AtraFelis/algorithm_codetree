@@ -20,6 +20,11 @@ public class Main {
             this.A = A;
             this.B = B;
         }
+
+        @Override
+        public String toString() {
+            return String.format("[%d %d %d]", to, A, B);
+        }
     }
 
     public static void main(String[] args) throws IOException {
@@ -45,8 +50,6 @@ public class Main {
             graph.get(J).add(new Edge(I, L, C));
         }
 
-        int[] A = new int[n + 1];
-        int[] B = new int[n + 1];
         double[] dist = new double[n + 1];
         for (int i = 0; i < dist.length; i++) {
             dist[i] = 1e9;
@@ -54,23 +57,23 @@ public class Main {
         dist[1] = 0;
 
         PriorityQueue<State> pq = new PriorityQueue<>((o1, o2) -> {
-            double time1 = o1.A + (double) x / o1.B;
-            double time2 = o2.A + (double) x / o2.B;
+            double time1 = o1.B + (double) x / o1.A;
+            double time2 = o2.B + (double) x / o2.A;
             return Double.compare(time1, time2);
         });
         pq.add(new State(1, 0, 0));
 
         while (!pq.isEmpty()) {
 
+            PriorityQueue<State> copy = new PriorityQueue<>(pq);
+
             State state = pq.remove();
             int currNode = state.to;
             int currA = state.A;
             int currB = state.B;
 
-            if (currA != 0) {
-                double currDist = currB + (double) x / currA;
-                if (dist[currNode] < currDist)
-                    continue;
+            if (currA != 0 && dist[currNode] < currB + (double) x / currA) {
+                continue;
             }
 
             for (Edge neighbor : graph.get(currNode)) {
@@ -79,7 +82,7 @@ public class Main {
                 int nextB = currB + neighbor.L;
 
                 double newDist = nextB + (double) x / nextA;
-                if (dist[nextNode] > newDist) {
+                if (dist[nextNode] >= newDist) {
                     dist[nextNode] = newDist;
                     pq.add(new State(nextNode, nextA, nextB));
                 }
@@ -87,6 +90,5 @@ public class Main {
         }
 
         System.out.println((int) dist[n]);
-
     }
 }
