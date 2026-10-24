@@ -45,15 +45,18 @@ public class Main {
         int[] distRed1 = dijkstra(red1);
         int[] distRed2 = dijkstra(red2);
 
-        int ans = Integer.MAX_VALUE;
+        // System.out.println(Arrays.toString(distRed1));
+        // System.out.println(Arrays.toString(distRed2));
+
+        long ans = Integer.MAX_VALUE;
         for(int i = 1; i <= n; i++) {
             if(i == red1 || i == red2)
                 continue;
 
-            ans = Math.min(ans, distRed1[i] + distRed1[red2] + distRed2[i]);
+            ans = Math.min(ans, (long)distRed1[i] + distRed1[red2] + distRed2[i]);
         }
 
-        System.out.println(ans);
+        System.out.println(ans < (long)1e9 ? ans : -1);
     }
 
     public static int[] dijkstra(int start) {
