@@ -41,21 +41,22 @@ public class Main {
         }
     
         // start -> red1 -> red2 -> start
+        // 양방향이므로 i -> red1이나 red1 -> i나 같음
+        int[] distRed1 = dijkstra(red1);
+        int[] distRed2 = dijkstra(red2);
+
         int ans = Integer.MAX_VALUE;
-        int redToRed = dijkstra(red1, red2);
         for(int i = 1; i <= n; i++) {
             if(i == red1 || i == red2)
                 continue;
-            
-            int toRed1 = dijkstra(i, red1);
-            int toRed2 = dijkstra(red2, i);
-            ans = Math.min(ans, toRed1 + redToRed + toRed2);
+
+            ans = Math.min(ans, distRed1[i] + distRed1[red2] + distRed2[i]);
         }
 
         System.out.println(ans);
     }
 
-    public static int dijkstra(int start, int end) {
+    public static int[] dijkstra(int start) {
         int[] dist = new int[graph.size()];
         for(int i = 0; i < graph.size(); i++) {
             dist[i] = (int)1e9;
@@ -72,9 +73,6 @@ public class Main {
             int currNode = edge.to;
             int currWeight = edge.weight;
 
-            if(currNode == end)
-                break;
-
             if(dist[currNode] < currWeight)
                 continue;
             
@@ -90,6 +88,6 @@ public class Main {
             }
         }
 
-        return dist[end];
+        return dist;
     }
 }
