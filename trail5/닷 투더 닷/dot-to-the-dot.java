@@ -72,10 +72,6 @@ public class Main {
             int currA = state.A;
             int currB = state.B;
 
-            if (currA != 0 && dist[currNode] < currB + (double) x / currA) {
-                continue;
-            }
-
             for (Edge neighbor : graph.get(currNode)) {
                 int nextNode = neighbor.to;
                 int nextA = currA == 0 ? neighbor.C : Math.min(currA, neighbor.C);
@@ -90,5 +86,6 @@ public class Main {
         }
 
         System.out.println((int) dist[n]);
+
     }
 }
