@@ -42,11 +42,14 @@ public class Main {
     
         // start -> red1 -> red2 -> start
         int ans = Integer.MAX_VALUE;
+        int redToRed = dijkstra(red1, red2);
         for(int i = 1; i <= n; i++) {
             if(i == red1 || i == red2)
                 continue;
-            ans = Math.min(ans, dijkstra(i, red1) + dijkstra(red1, red2) + dijkstra(red2, i));
-            ans = Math.min(ans, dijkstra(i, red2) + dijkstra(red2, red1) + dijkstra(red1, i));
+            
+            int toRed1 = dijkstra(i, red1);
+            int toRed2 = dijkstra(red2, i);
+            ans = Math.min(ans, toRed1 + redToRed + toRed2);
         }
 
         System.out.println(ans);
