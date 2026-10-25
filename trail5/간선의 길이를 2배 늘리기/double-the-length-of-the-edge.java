@@ -60,17 +60,33 @@ public class Main {
         // path 따라서 가중치 순회
         while(idx != 1) {
             int prev = originalPath[idx];
-            // prev -> idx 가중치
-            for(Edge edge : graph.get(prev)) {
-                if(edge.to == idx) {
-                    edge.weight *= 2;
-                    dijkstra();
-                    edge.weight /= 2;
+            
+            Edge forward = null;
+            Edge backward = null;
 
-                    maxDist = Math.max(maxDist, dist[n]);
+            for (Edge edge : graph.get(prev)) {
+                if (edge.to == idx) {
+                    forward = edge;
                     break;
                 }
             }
+
+            for (Edge edge : graph.get(idx)) {
+                if (edge.to == prev) {
+                    backward = edge;
+                    break;
+                }
+            }
+
+            forward.weight *= 2;
+            backward.weight *= 2;
+
+            dijkstra();
+
+            maxDist = Math.max(maxDist, dist[n]);
+
+            forward.weight /= 2;
+            backward.weight /= 2;
 
             idx = path[idx];
         }
