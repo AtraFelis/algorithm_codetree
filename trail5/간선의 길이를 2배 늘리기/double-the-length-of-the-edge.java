@@ -52,13 +52,14 @@ public class Main {
         dist = new long[n + 1];
 
         dijkstra();
+        int[] originalPath = path.clone();
         long ans = dist[n];
 
         int idx = n;
         long maxDist = 0;
         // path 따라서 가중치 순회
         while(idx != 1) {
-            int prev = path[idx];
+            int prev = originalPath[idx];
             // prev -> idx 가중치
             for(Edge edge : graph.get(prev)) {
                 if(edge.to == idx) {
@@ -81,7 +82,6 @@ public class Main {
     private static void dijkstra() {
         Arrays.fill(dist, (long)1e12);
         dist[1] = 0;
-        Arrays.fill(path, 0);
 
         PriorityQueue<Edge> pq = new PriorityQueue<>((e1, e2) -> Long.compare(e1.weight, e2.weight));
 
