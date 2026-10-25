@@ -55,44 +55,31 @@ public class Main {
         long ans = dist[n];
 
         int idx = n;
-        int target = 0;
-        long targetWeight = 0;
-
+        long maxDist = 0;
         // path 따라서 가중치 순회
         while(idx != 1) {
-            long w = 0;
             int prev = path[idx];
             // prev -> idx 가중치
             for(Edge edge : graph.get(prev)) {
                 if(edge.to == idx) {
-                    w = edge.weight;
+                    edge.weight *= 2;
+                    dijkstra();
+                    edge.weight /= 2;
+
+                    maxDist = Math.max(maxDist, dist[n]);
                     break;
                 }
-            }
-
-            if(targetWeight < w) {
-                targetWeight = w;
-                target = idx;
             }
 
             idx = path[idx];
         }
 
-        for(Edge edge : graph.get(path[target])) {
-            if(edge.to == target) {
-                edge.weight *= 2;
-                break;
-            }
-        }
-
-        dijkstra();
-        ans = dist[n] - ans;
-        
+        ans = maxDist - ans;
         System.out.println(ans);
     }
 
     private static void dijkstra() {
-        Arrays.fill(dist, (long)1e11);
+        Arrays.fill(dist, (long)1e12);
         dist[1] = 0;
         Arrays.fill(path, 0);
 
