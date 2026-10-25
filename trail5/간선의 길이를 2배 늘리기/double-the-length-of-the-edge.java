@@ -60,7 +60,7 @@ public class Main {
         // path 따라서 가중치 순회
         while(idx != 1) {
             int prev = originalPath[idx];
-            
+
             Edge forward = null;
             Edge backward = null;
 
@@ -88,7 +88,7 @@ public class Main {
             forward.weight /= 2;
             backward.weight /= 2;
 
-            idx = path[idx];
+            idx = originalPath[idx];
         }
 
         ans = maxDist - ans;
