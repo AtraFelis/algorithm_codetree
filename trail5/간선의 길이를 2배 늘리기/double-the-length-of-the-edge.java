@@ -54,16 +54,17 @@ public class Main {
         dijkstra();
         long ans = dist[n];
 
-        int idx = 1;
+        int idx = n;
         int target = 0;
         long targetWeight = 0;
 
         // path 따라서 가중치 순회
-        while(idx != n) {
+        while(idx != 1) {
             long w = 0;
-            // idx -> path[idx] 가중치
-            for(Edge edge : graph.get(idx)) {
-                if(edge.to == path[idx]) {
+            int prev = path[idx];
+            // prev -> idx 가중치
+            for(Edge edge : graph.get(prev)) {
+                if(edge.to == idx) {
                     w = edge.weight;
                     break;
                 }
@@ -77,8 +78,8 @@ public class Main {
             idx = path[idx];
         }
 
-        for(Edge edge : graph.get(target)) {
-            if(edge.to == path[target]) {
+        for(Edge edge : graph.get(path[target])) {
+            if(edge.to == target) {
                 edge.weight *= 2;
                 break;
             }
@@ -93,6 +94,7 @@ public class Main {
     private static void dijkstra() {
         Arrays.fill(dist, (long)1e11);
         dist[1] = 0;
+        Arrays.fill(path, 0);
 
         PriorityQueue<Edge> pq = new PriorityQueue<>((e1, e2) -> Long.compare(e1.weight, e2.weight));
 
@@ -116,7 +118,7 @@ public class Main {
                 if(dist[nextNode] > newWeight) {
                     pq.add(new Edge(nextNode, newWeight));
                     dist[nextNode] = newWeight;
-                    path[currNode] = nextNode;
+                    path[nextNode] = currNode;
                 }
             }
         }
