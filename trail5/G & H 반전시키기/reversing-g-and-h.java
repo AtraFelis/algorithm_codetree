@@ -11,16 +11,18 @@ public class Main {
         char[] aChars = a.toCharArray();
         char[] bChars = b.toCharArray();
 
-        int aIdx = 0, bIdx = 0;
+        int idx = 0;
         int ans = 0;
-        while (aIdx != a.length() || bIdx != b.length()) {
-            if (aChars[aIdx] == bChars[bIdx]) {
-                if (aIdx != bIdx)
-                    ans++;
-                aIdx = ++bIdx;
-            } else {
-                bIdx++;
+        boolean flag = true; // true : 이전 문자도 동일했음 false : 이전 문자 동일하지 않음
+        while (idx != a.length()) {
+            if (aChars[idx] == bChars[idx] && flag == false) {
+                ans++;
+                flag = true;
+            } else if (aChars[idx] != bChars[idx]) {
+                flag = false;
             }
+
+            idx++;
         }
 
         System.out.println(ans);
