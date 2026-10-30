@@ -14,7 +14,10 @@ public class Main {
         }
 
         for(int i = 0; i < n - 1; i++) {
-            graph.get(sc.nextInt()).add(sc.nextInt());
+            int a = sc.nextInt();
+            int b = sc.nextInt();
+            graph.get(a).add(b);
+            graph.get(b).add(a);
         }
 
         parents = new int[n + 1];
