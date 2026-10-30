@@ -1,12 +1,17 @@
 import java.util.*;
+import java.io.*;
 
 public class Main {
     private static int[] parents;
     private static List<List<Integer>> graph;
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        StringBuilder sb = new StringBuilder();
+
+        int n = Integer.parseInt(br.readLine());
+
 
         graph = new ArrayList<>();
         for(int i = 0; i <= n; i++) {
@@ -14,8 +19,10 @@ public class Main {
         }
 
         for(int i = 0; i < n - 1; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
+            st = new StringTokenizer(br.readLine());
+
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
             graph.get(a).add(b);
             graph.get(b).add(a);
         }
@@ -25,8 +32,9 @@ public class Main {
         dfs(1);
 
         for(int i = 2; i <= n; i++) {
-            System.out.println(parents[i]);
+            sb.append(parents[i]).append('\n');
         }
+        System.out.println(sb);
     }
 
     private static void dfs(int parent) {
