@@ -44,6 +44,10 @@ public class Main {
         visited = new boolean[n + 1];
         visited[1] = true;
         dfs(1, 0);
+
+        visited = new boolean[n + 1];
+        visited[root] = true;
+        ans = 0;
         dfs(root, 0);
 
         System.out.println(ans);
