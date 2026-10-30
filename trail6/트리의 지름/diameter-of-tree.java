@@ -20,6 +20,7 @@ public class Main {
     private static boolean[] visited;
     private static int ans = 0;
     private static int n;
+    private static int root = 0;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -40,16 +41,19 @@ public class Main {
             graph.get(b).add(new Edge(a, w));
         }
 
-        for (int i = 1; i <= n; i++) {
-            visited = new boolean[n + 1];
-            visited[i] = true;
-            dfs(i, 0);
-        }
+        visited = new boolean[n + 1];
+        visited[1] = true;
+        dfs(1, 0);
+        dfs(root, 0);
 
         System.out.println(ans);
     }
 
     private static void dfs(int node, int sum) {
+        if (ans < sum) {
+            ans = sum;
+            root = node;
+        }
         ans = Math.max(ans, sum);
 
         for (Edge edge : graph.get(node)) {
