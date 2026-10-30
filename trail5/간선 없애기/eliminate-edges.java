@@ -45,7 +45,7 @@ public class Main {
                 graph[i][j] = tmp;
                 graph[j][i] = tmp;
 
-                if (originalDist != dist[n] && dist[n] != (int) 1e9)
+                if (originalDist != dist[n])
                     ans++;
             }
         }
