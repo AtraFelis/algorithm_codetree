@@ -2,7 +2,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Main {
@@ -10,7 +12,6 @@ public class Main {
     private static int n, m;
     private static List<List<Integer>> graph = new ArrayList<>();
     private static boolean[] visited;
-    private static boolean isTree;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -49,35 +50,40 @@ public class Main {
             if (flag)
                 break;
 
-            isTree = true;
-            dfs(0, root);
-            if (isTree) {
-                // System.out.println("왜 트리냐고");
+            if (dfs(root))
                 ans++;
-            }
         }
 
         System.out.println(ans);
     }
 
-    private static void dfs(int parent, int node) {
-        if (!isTree)
-            return;
+    private static boolean dfs(int root) {
+        visited[root] = true;
 
-        visited[node] = true;
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[] { 0, root }); // {부모 노드, 자식 노드}
 
-        for (Integer child : graph.get(node)) {
-            if (parent == child)
-                continue;
+        while (!q.isEmpty()) {
+            int parent = q.peek()[0];
+            int curr = q.remove()[1];
 
-            // 이웃이 부모 노드가 아닌데 방문처리 되어 있으면 싸이클
-            if (visited[child])
-                isTree = false;
+            for (Integer child : graph.get(curr)) {
 
-            // System.out.printf("dfs(%d)\n", child);
-            dfs(node, child);
+                // System.out.printf("%d %d %d\n", parent, curr, child);
+
+                // 이웃이 부모 노드가 아닌데 방문처리 되어 있으면 싸이클
+                if (child != parent && visited[child])
+                    return false;
+
+                if (child != parent) {
+                    q.add(new int[] { curr, child });
+                    visited[child] = true;
+                }
+            }
+
         }
 
-        return;
+        return true;
     }
 }
+
