@@ -63,11 +63,12 @@ public class Main {
         Arrays.fill(dist, (int) 1e9);
         dist[node] = 0;
 
-        if (node == n)
-            return;
-
         for (int i = 1; i < n; i++) {
             visited[node] = true;
+
+            if (node == n)
+                return;
+
             for (int next = 1; next <= n; next++) {
                 if (graph[node][next] == 0)
                     continue;
