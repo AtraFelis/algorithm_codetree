@@ -1,20 +1,38 @@
 import java.util.*;
 
 public class Main {
+    private static int[] parents;
+    private static List<List<Integer>> graph;
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
 
-        int[][] nodes = new int[n-1][2];
-        for (int i = 0; i < n - 1; i++) {
-            nodes[i][0] = sc.nextInt(); // 부모
-            nodes[i][1] = sc.nextInt(); // 자식
+        graph = new ArrayList<>();
+        for(int i = 0; i <= n; i++) {
+            graph.add(new ArrayList<>());
         }
 
-        Arrays.sort(nodes, (n1, n2) -> Integer.compare(n1[1], n2[1]));
+        for(int i = 0; i < n - 1; i++) {
+            graph.get(sc.nextInt()).add(sc.nextInt());
+        }
 
-        for (int i = 0; i < n - 1; i++) {
-            System.out.println(nodes[i][0]);
+        parents = new int[n + 1];
+
+        dfs(1);
+
+        for(int i = 2; i <= n; i++) {
+            System.out.println(parents[i]);
+        }
+    }
+
+    private static void dfs(int parent) {
+        for(Integer child : graph.get(parent)) {
+            if(parents[parent] == child)
+                continue;
+            parents[child] = parent;
+
+            dfs(child);
         }
     }
 }
