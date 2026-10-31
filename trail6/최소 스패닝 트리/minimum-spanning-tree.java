@@ -37,7 +37,7 @@ public class Main {
     private static void union(int a, int b) {
         int rootA = find(a);
         int rootB = find(b);
-        uf[a] = b;
+        uf[rootA] = rootB;
     }
 
     private static int find(int a) {
