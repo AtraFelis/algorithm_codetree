@@ -46,11 +46,12 @@ public class Main {
         int rootB = find(b);
 
         if(size[rootA] > size[rootB]) {
-            uf[rootA] = rootB;
-            size[rootB] += size[rootA];
-        } else {
             uf[rootB] = rootA;
             size[rootA] += size[rootB];
+        } else {
+            
+            uf[rootA] = rootB;
+            size[rootB] += size[rootA];
         }
     }
 
