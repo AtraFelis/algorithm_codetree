@@ -22,6 +22,7 @@ public class Main {
 
         Arrays.sort(edges, (e1, e2) -> Integer.compare(e1[2], e2[2]));
         int ans = 0;
+        int selected = 0;
         for (int i = 0; i < m; i++) {
             int a = edges[i][0];
             int b = edges[i][1];
@@ -29,6 +30,9 @@ public class Main {
                 continue;
             union(a, b);
             ans += edges[i][2];
+
+            if(++selected == n - 1)
+                break;
         }
 
         System.out.println(ans);
