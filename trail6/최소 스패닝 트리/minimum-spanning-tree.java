@@ -3,6 +3,7 @@ import java.util.Arrays;
 public class Main {
 
     private static int[] uf;
+    private static int[] size;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -16,8 +17,10 @@ public class Main {
         }
 
         uf = new int[n + 1];
+        size = new int[n + 1];
         for(int i = 0; i <= n; i++) {
             uf[i] = i;
+            size[i] = 1;
         }
 
         Arrays.sort(edges, (e1, e2) -> Integer.compare(e1[2], e2[2]));
@@ -41,7 +44,14 @@ public class Main {
     private static void union(int a, int b) {
         int rootA = find(a);
         int rootB = find(b);
-        uf[rootA] = rootB;
+
+        if(size[rootA] > size[rootB]) {
+            uf[rootA] = rootB;
+            size[rootB] += size[rootA];
+        } else {
+            uf[rootB] = rootA;
+            size[rootA] += size[rootB];
+        }
     }
 
     private static int find(int a) {
