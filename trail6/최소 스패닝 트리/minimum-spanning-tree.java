@@ -45,7 +45,7 @@ public class Main {
         int rootA = find(a);
         int rootB = find(b);
 
-        if (a == b) return;
+        if (rootA == rootB) return;
 
         if(size[rootA] > size[rootB]) {
             uf[rootB] = rootA;
