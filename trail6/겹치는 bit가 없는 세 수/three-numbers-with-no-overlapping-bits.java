@@ -1,47 +1,46 @@
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] arr = new int[n];
+
+    private static int[] arr;
+    private static int n;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        n = Integer.parseInt(br.readLine());
+        arr = new int[n];
+
+        StringTokenizer st = new StringTokenizer(br.readLine());
         for (int i = 0; i < n; i++) {
-            arr[i] = sc.nextInt();
+            arr[i] = Integer.parseInt(st.nextToken());
         }
+
         // 서로 겹치지 않는다면, &연산 했을 때 0이 되어야 함
-        Map<Integer, List<Integer>> map = new HashMap<>();
-        map.put(arr[0], new ArrayList<>());
-        map.get(arr[0]).add(arr[0]);
-        for (int i = 1; i < n; i++) {
-            boolean flag = false;
-            for (Integer num : map.keySet()) {
-                if ((num & arr[i]) == 0) {
-                    map.get(num).add(arr[i]);
-                    flag = true;
-                    break;
-                }
-            }
-            if (flag) {
-                map.put(arr[i], new ArrayList<>());
-                map.get(arr[i]).add(arr[i]);
-            }
-        }
 
-        long ans = 0;
-        for (Integer num : map.keySet()) {
-            List<Integer> list = map.get(num);
-
-            if (list.size() < 3)
-                continue;
-
-            Collections.sort(list, Collections.reverseOrder());
-            long sum = 0;
-            for (int i = 0; i < 3; i++) {
-                sum += (long) list.get(i);
-            }
-            ans = Math.max(ans, sum);
-        }
+        dfs(0, 0 ,0 ,0);
 
         System.out.println(ans);
+    }
+
+    private static long ans = 0;
+
+    private static void dfs(int idx, int sum, int size, int mask) {
+        if (size == 3) {
+            ans = Math.max(sum, ans);
+            return;
+        }
+
+        for (int i = idx; i < n; i++) {
+            if ((arr[i] & mask) != 0) {
+                continue;
+            }
+            dfs(i + 1, sum + arr[i], size + 1, mask | arr[i]);
+        }
     }
 }
